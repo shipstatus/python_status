@@ -22,7 +22,7 @@ env:
 build:
 
   pre_ci_boot:
-    image_name: drydock/u12pyt
+    image_name: drydock/u14pyt
     image_tag: prod
     pull: true
 
@@ -32,6 +32,7 @@ build:
     - mkdir -p shippable/testresults
     - mkdir -p shippable/codecoverage
     - which python
+    - python --version
     - coverage run `which nosetests` test.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
     - coverage xml -o shippable/codecoverage/coverage.xml
 
