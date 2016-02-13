@@ -22,7 +22,7 @@ env:
 build:
 
   pre_ci_boot:
-    image_name: drydock/u12pyt
+    image_name: drydock/u14pytall
     image_tag: prod
     pull: true
 
