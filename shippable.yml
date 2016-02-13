@@ -1,14 +1,7 @@
 language: python
 
 python:
-  - 2.6
   - 2.7
-  - 3.2
-  - 3.3
-  - 3.4
-  - 3.5
-  - pypy
-  - pypy3
 
 env:
   global:
@@ -19,21 +12,29 @@ env:
   matrix:
     - M1=ONE
 
+services:
+  - couchdb
+  - elasticsearch
+  - memcached
+  - redis
+  - rabbitmq
+  - postgres
+  - rethinkdb
+
 build:
-
-  pre_ci_boot:
-    image_name: drydock/u12pyt
-    image_tag: prod
-    pull: true
-
 
   ci:
     - pip install -r requirements.txt
+    - psql -c 'create database test;' -U postgres
+    - python initialize.py
     - mkdir -p shippable/testresults
     - mkdir -p shippable/codecoverage
-    - which python
-    - coverage run `which nosetests` test.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
-    - coverage xml -o shippable/codecoverage/coverage.xml
+    - nosetests test.py --with-xunit --xunit-file=shippable/testresults/nosetests.xml
+    - which python && coverage run --branch test.py
+    - which python && coverage xml -o shippable/codecoverage/coverage.xml test.py
+    - python elastic.py
+    - python memcache_service.py
+    - python redis_service.py
 
   post_ci:
     - echo "true"

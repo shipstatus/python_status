@@ -1,2 +1,9 @@
 nose
 coverage
+couchdbkit
+python-memcached
+pyes==0.99.6
+redis
+pika
+psycopg2
+rethinkdb==1.16.0-4
